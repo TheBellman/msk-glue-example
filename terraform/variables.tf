@@ -27,5 +27,11 @@ variable "tags" {
 }
 
 locals {
-	cluster_name = "glue-example"
+  cluster_name      = "glue-example"
+  kafka_version     = "3.2.0"
+  cluster_node_type = "kafka.t3.small"
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
 }
