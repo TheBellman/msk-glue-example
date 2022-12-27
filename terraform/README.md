@@ -1,5 +1,5 @@
 # Example
-This example uses the VPC module to stand up a VPC, then install a public and private instance in appropriate subnets.
+This example uses the VPC module to stand up a VPC with private and "public" subnets.
 
 ## Prerequisites
 This module does make use of Terraform version constraints (see `versions.tf`) but can be summarised as:

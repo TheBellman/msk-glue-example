@@ -25,3 +25,7 @@ variable "ssh_inbound" {
 variable "tags" {
   type = map(string)
 }
+
+locals {
+	cluster_name = "glue-example"
+}
