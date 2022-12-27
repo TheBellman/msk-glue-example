@@ -2,9 +2,18 @@
 Demonstration of using AWS MSK (Kafka) with AWS Glue as a schema repository
 
 ## Prerequisites
-to be completed
+The terraform code does makes use of version constraints (see [versions.tf](terraform/versions.tf)) but can be summarised as:
+
+ - Terraform 1.3.6 or above
+ - Terraform AWS provider 4.48.0 or above
+
+The example code broadly assumes AWS CLI 2.9.10 or better is available.
 
 ## Usage
+
+### Create Test Environment
+To begin with change directories into the [terraform](terraform) folder and follow the [README.me](terraform/README.md) there for instructions.
+
 to be completed
 
 ## License
