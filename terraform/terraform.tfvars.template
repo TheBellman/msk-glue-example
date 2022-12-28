@@ -1,4 +1,4 @@
-aws_region     = "eu-west-1"
+aws_region     = "eu-west-2"
 aws_profile    = "????"
 aws_account_id = "????"
 vpc_cidr       = "172.21.0.0/16"

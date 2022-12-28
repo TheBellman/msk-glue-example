@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "dev_kafka_in" {
   from_port         = 9092
   to_port           = 9092
   protocol          = "tcp"
-  cidr_blocks       = concat(tolist(module.vpc.public_subnet_id), var.ssh_inbound)
+  cidr_blocks       = concat(tolist(module.vpc.public_subnet), var.ssh_inbound)
 }
 
 resource "aws_security_group_rule" "dev_zk_in" {
@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "dev_zk_in" {
   from_port         = 2181
   to_port           = 2181
   protocol          = "tcp"
-  cidr_blocks       = concat(tolist(module.vpc.public_subnet_id), var.ssh_inbound)
+  cidr_blocks       = concat(tolist(module.vpc.public_subnet), var.ssh_inbound)
 }
 
 
@@ -51,7 +51,7 @@ resource "aws_kms_key" "dev" {
 # bucket for logging 
 # --------------------------------------------------------------------------------
 resource "aws_s3_bucket" "logs" {
-  bucket_prefix = "kafka_logs_"
+  bucket_prefix = "kafka-logs-"
 
   force_destroy = true
 
@@ -82,7 +82,6 @@ resource "aws_s3_bucket_public_access_block" "logs" {
 # --------------------------------------------------------------------------------
 # log group  
 # --------------------------------------------------------------------------------
-
 resource "aws_cloudwatch_log_group" "dev" {
   name_prefix = "kafka_"
 
@@ -123,7 +122,7 @@ resource "aws_msk_cluster" "dev" {
       s3 {
         enabled = true
         bucket  = aws_s3_bucket.logs.id
-        prefix  = "logs/msk-"
+        prefix  = "logs/msk"
       }
     }
   }
