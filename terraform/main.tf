@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "dev_kafka_in" {
   from_port         = 9092
   to_port           = 9092
   protocol          = "tcp"
-  cidr_blocks       = concat(tolist(module.vpc.public_subnet), var.ssh_inbound)
+  cidr_blocks       = tolist(module.vpc.public_subnet)
 }
 
 resource "aws_security_group_rule" "dev_zk_in" {
@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "dev_zk_in" {
   from_port         = 2181
   to_port           = 2181
   protocol          = "tcp"
-  cidr_blocks       = concat(tolist(module.vpc.public_subnet), var.ssh_inbound)
+  cidr_blocks       = tolist(module.vpc.public_subnet)
 }
 
 
@@ -93,22 +93,39 @@ resource "aws_cloudwatch_log_group" "dev" {
 # --------------------------------------------------------------------------------
 # create the MSK cluster 
 # --------------------------------------------------------------------------------
+resource "aws_msk_configuration" "dev" {
+  kafka_versions = [local.kafka_version]
+  name           = local.cluster_name
+
+  server_properties = <<PROPERTIES
+auto.create.topics.enable = true
+delete.topic.enable = true
+PROPERTIES
+}
+
 resource "aws_msk_cluster" "dev" {
   cluster_name           = local.cluster_name
   kafka_version          = local.kafka_version
   number_of_broker_nodes = length(data.aws_availability_zones.available.zone_ids)
 
   broker_node_group_info {
-    instance_type  = local.cluster_node_type
-    client_subnets = tolist(module.vpc.public_subnet_id)
+    instance_type = local.cluster_node_type
+    # TODO assuming that our client code is all in the public subnets
+    client_subnets  = tolist(module.vpc.public_subnet_id)
+    security_groups = [aws_security_group.dev.id] # controls where incoming requests to the cluster can come from
+
+    # without specifying a client_authentication block, there's no client authentication required
     storage_info {
       ebs_storage_info {
-        volume_size = 256
+        volume_size = 100
       }
     }
-    security_groups = [aws_security_group.dev.id]
   }
 
+  configuration_info {
+    arn      = aws_msk_configuration.dev.arn
+    revision = 1
+  }
   encryption_info {
     encryption_at_rest_kms_key_arn = aws_kms_key.dev.arn
   }

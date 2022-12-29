@@ -1,10 +1,6 @@
 # --------------------------------------------------------------------------------
 # report some interesting facts
 # --------------------------------------------------------------------------------
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
 output "vpc_arn" {
   value = module.vpc.vpc_arn
 }
@@ -19,4 +15,12 @@ output "private_subnet" {
 
 output "eip_public_address" {
   value = module.vpc.eip_public_address
+}
+
+output "bootstraps" {
+  value = aws_msk_cluster.dev.bootstrap_brokers
+}
+
+output "zookeeper" {
+  value = aws_msk_cluster.dev.zookeeper_connect_string
 }
