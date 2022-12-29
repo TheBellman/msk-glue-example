@@ -26,6 +26,10 @@ variable "tags" {
   type = map(string)
 }
 
+variable "key_pair_name" {
+  type = string
+}
+
 locals {
   cluster_name      = "glue-example"
   kafka_version     = "3.2.0"

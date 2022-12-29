@@ -126,7 +126,7 @@ resource "aws_msk_cluster" "dev" {
     arn      = aws_msk_configuration.dev.arn
     revision = 1
   }
-  
+
   encryption_info {
     encryption_at_rest_kms_key_arn = aws_kms_key.dev.arn
   }

@@ -17,6 +17,7 @@ resource "aws_instance" "dev" {
   subnet_id                   = module.vpc.public_subnet_id[0]
   vpc_security_group_ids      = [module.vpc.public_sg]
   associate_public_ip_address = true
+  key_name                    = var.key_pair_name
   depends_on                  = [module.vpc]
 
   disable_api_termination              = false
