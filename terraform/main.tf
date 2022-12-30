@@ -10,6 +10,7 @@ module "vpc" {
   ssh_inbound = var.ssh_inbound
 }
 
+
 # --------------------------------------------------------------------------------
 # security group to be used by the cluster to allow incoming requests
 # --------------------------------------------------------------------------------
@@ -17,23 +18,14 @@ resource "aws_security_group" "dev" {
   name        = "msk_dev"
   vpc_id      = module.vpc.vpc_id
   description = "Security group for MSK cluster"
-  tags = {Name = "msk_dev"}
+  tags        = { Name = "msk_dev" }
 }
 
 resource "aws_security_group_rule" "dev_kafka_in" {
   security_group_id = aws_security_group.dev.id
   type              = "ingress"
   from_port         = 9092
-  to_port           = 9092
-  protocol          = "tcp"
-  cidr_blocks       = tolist(module.vpc.public_subnet)
-}
-
-resource "aws_security_group_rule" "dev_kafka_tls_in" {
-  security_group_id = aws_security_group.dev.id
-  type              = "ingress"
-  from_port         = 9094
-  to_port           = 9094
+  to_port           = 9098
   protocol          = "tcp"
   cidr_blocks       = tolist(module.vpc.public_subnet)
 }
@@ -42,11 +34,32 @@ resource "aws_security_group_rule" "dev_zk_in" {
   security_group_id = aws_security_group.dev.id
   type              = "ingress"
   from_port         = 2181
-  to_port           = 2181
+  to_port           = 2182
   protocol          = "tcp"
   cidr_blocks       = tolist(module.vpc.public_subnet)
 }
 
+# --------------------------------------------------------------------------------
+# the security group for instances needs to allow kafka requests out
+# --------------------------------------------------------------------------------
+
+resource "aws_security_group_rule" "dev_kafka_out" {
+  security_group_id = module.vpc.public_sg
+  type              = "egress"
+  from_port         = 9082
+  to_port           = 9098
+  protocol          = "tcp"
+  cidr_blocks       = tolist(module.vpc.private_subnet)
+}
+
+resource "aws_security_group_rule" "dev_zk_out" {
+  security_group_id = module.vpc.public_sg
+  type              = "egress"
+  from_port         = 2181
+  to_port           = 2182
+  protocol          = "tcp"
+  cidr_blocks       = tolist(module.vpc.private_subnet)
+}
 
 # --------------------------------------------------------------------------------
 # key used for encryption at rest
@@ -124,10 +137,9 @@ resource "aws_msk_cluster" "dev" {
   number_of_broker_nodes = length(data.aws_availability_zones.available.zone_ids)
 
   broker_node_group_info {
-    instance_type = local.cluster_node_type
-    # TODO this should be the privatee subnets
+    instance_type   = local.cluster_node_type
     client_subnets  = tolist(module.vpc.private_subnet_id)
-    security_groups = [aws_security_group.dev.id] # controls where incoming requests to the cluster can come from
+    security_groups = [aws_security_group.dev.id]
 
     # without specifying a client_authentication block, there's no client authentication required
     storage_info {

@@ -13,10 +13,6 @@ output "private_subnet" {
   value = module.vpc.private_subnet
 }
 
-output "eip_public_address" {
-  value = module.vpc.eip_public_address
-}
-
 output "bootstraps" {
   value = aws_msk_cluster.dev.bootstrap_brokers_tls
 }
