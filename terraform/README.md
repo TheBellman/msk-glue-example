@@ -6,6 +6,7 @@ This module does make use of Terraform version constraints (see `versions.tf`) b
 
  - Terraform 1.3.6 or above
  - Terraform AWS provider 4.48.0 or above
+ - the target AWS region has a usable EC2 Key Pair
 
 The example code broadly assumes AWS CLI 2.9.10 or better is available.
 
@@ -41,7 +42,10 @@ Apply complete! Resources: 50 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-eip_public_address = 18.134.115.144
+bootstraps = "b-1.glueexample.d0h8ge.c4.kafka.eu-west-2.amazonaws.com:9094, ...
+eip_public_address = "35.177.195.129"
+instance_id = "i-0135dd236aec248b7"
+instance_ip = "18.133.161.68"
 private_subnet = [
   "172.21.96.0/19",
   "172.21.128.0/19",
@@ -52,9 +56,16 @@ public_subnet = [
   "172.21.32.0/19",
   "172.21.64.0/19",
 ]
-vpc_arn = arn:aws:ec2:eu-west-2:889199313043:vpc/vpc-026dcbaa33a863014
-vpc_id = vpc-026dcbaa33a863014
+vpc_arn = "arn:aws:ec2:eu-west-2:889199313043:vpc/vpc-0b585be76b15786b5"
+zookeeper = "z-1.glueexample.d0h8ge.c4.kafka.eu-west-2.amazonaws.com:2181, ...
 ```
+
+You can connect to the instance using [mssh](https://github.com/aws/aws-ec2-instance-connect-cli), e.g.
+
+```shell
+$ mssh -u adm_rhook_cli i-0135dd236aec248b7
+```
+
 
 ## License
 Copyright 2022 Little Dog Digital

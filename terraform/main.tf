@@ -17,6 +17,7 @@ resource "aws_security_group" "dev" {
   name        = "msk_dev"
   vpc_id      = module.vpc.vpc_id
   description = "Security group for MSK cluster"
+  tags = {Name = "msk_dev"}
 }
 
 resource "aws_security_group_rule" "dev_kafka_in" {
@@ -24,6 +25,15 @@ resource "aws_security_group_rule" "dev_kafka_in" {
   type              = "ingress"
   from_port         = 9092
   to_port           = 9092
+  protocol          = "tcp"
+  cidr_blocks       = tolist(module.vpc.public_subnet)
+}
+
+resource "aws_security_group_rule" "dev_kafka_tls_in" {
+  security_group_id = aws_security_group.dev.id
+  type              = "ingress"
+  from_port         = 9094
+  to_port           = 9094
   protocol          = "tcp"
   cidr_blocks       = tolist(module.vpc.public_subnet)
 }
@@ -42,9 +52,14 @@ resource "aws_security_group_rule" "dev_zk_in" {
 # key used for encryption at rest
 # --------------------------------------------------------------------------------
 resource "aws_kms_key" "dev" {
-  description             = "MKS encryption at rest"
+  description             = "MSK encryption at rest"
   deletion_window_in_days = 7
   tags                    = { Name = "msk_demo" }
+}
+
+resource "aws_kms_alias" "dev" {
+  name          = "alias/msk"
+  target_key_id = aws_kms_key.dev.key_id
 }
 
 # --------------------------------------------------------------------------------
@@ -110,8 +125,8 @@ resource "aws_msk_cluster" "dev" {
 
   broker_node_group_info {
     instance_type = local.cluster_node_type
-    # TODO assuming that our client code is all in the public subnets
-    client_subnets  = tolist(module.vpc.public_subnet_id)
+    # TODO this should be the privatee subnets
+    client_subnets  = tolist(module.vpc.private_subnet_id)
     security_groups = [aws_security_group.dev.id] # controls where incoming requests to the cluster can come from
 
     # without specifying a client_authentication block, there's no client authentication required
@@ -126,6 +141,7 @@ resource "aws_msk_cluster" "dev" {
     arn      = aws_msk_configuration.dev.arn
     revision = 1
   }
+
   encryption_info {
     encryption_at_rest_kms_key_arn = aws_kms_key.dev.arn
   }
