@@ -12,7 +12,7 @@ The example code broadly assumes AWS CLI 2.9.10 or better is available.
 ## Usage
 
 ### Create Test Environment
-To begin with change directories into the [terraform](terraform) folder and follow the [README.me](terraform/README.md) there for instructions.
+To begin with change directories into the [terraform](terraform) folder and follow the [README.me](terraform/README.md) there for instructions. Those instructions include notes on how to connect to the test instance from your desktop.
 
 to be completed
 

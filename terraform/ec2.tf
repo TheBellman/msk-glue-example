@@ -40,5 +40,7 @@ wget -q https://archive.apache.org/dist/kafka/3.2.0/kafka_2.12-3.2.0.tgz
 tar xzf kafka_2.12-3.2.0.tgz
 chown -R ec2-user:ec2-user kafka_2.12-3.2.0
 rm kafka_2.12-3.2.0.tgz
+echo "security.protocol=SSL" > ~ec2-user/client-ssl.properties
+chown ec2-user:ec2-user ~ec2-user/client-ssl.properties
 EOF
 }
