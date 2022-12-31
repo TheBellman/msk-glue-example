@@ -58,7 +58,6 @@ Apply complete! Resources: 50 added, 0 changed, 0 destroyed.
 Outputs:
 
 bootstraps = "b-1.glueexample.d0h8ge.c4.kafka.eu-west-2.amazonaws.com:9094, ...
-eip_public_address = "35.177.195.129"
 instance_id = "i-0135dd236aec248b7"
 instance_ip = "18.133.161.68"
 private_subnet = [
