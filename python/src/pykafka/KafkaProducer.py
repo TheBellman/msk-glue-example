@@ -18,7 +18,8 @@ class KafkaProducer:
         self.producer = Producer(
             {
                 'bootstrap.servers': config.bootstrap,
-                'client.id': socket.gethostname()
+                'client.id': socket.gethostname(),
+                'security.protocol': 'SSL'
             }
         )
 
