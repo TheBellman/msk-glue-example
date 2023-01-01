@@ -29,3 +29,15 @@ override.tf.json
 # example: *tfplan*
 terraform/.terraform.lock.hcl
 terraform/terraform.tfvars
+
+
+.idea
+.DS_Store
+*.iml
+*.egg-info
+__pycache__
+python/venv/
+python/logs/
+python/build/
+python/dist/
+
