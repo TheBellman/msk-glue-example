@@ -34,9 +34,9 @@ resource "aws_instance" "dev" {
   user_data = <<EOF
 #!/bin/bash
 amazon-linux-extras install -y epel
-yum -yq update
-yum -yq groupinstall "Development Tools" 
-yum -yq install java-11 git openssl-devel libffi-devel bzip2-devel wget
+yum -y -q update
+yum -y -q groupinstall "Development Tools" 
+yum -y -q install java-11 git openssl-devel libffi-devel bzip2-devel wget
 
 mkdir -p /opt/python3.9
 wget -q https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tgz -P /opt/python3.9
@@ -56,6 +56,6 @@ echo "security.protocol=SSL" > /home/ec2-user/client.properties
 
 git clone https://github.com/TheBellman/msk-glue-example.git
 
-chown -R /home/ec2-user
+chown -R ec2-user:ec2-user /home/ec2-user
 EOF
 }
