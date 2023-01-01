@@ -18,11 +18,13 @@ to be completed
 
 ```
 cd msk-glue-example/python
-pip3 install virtualenv
+python3.9 -m pip install --upgrade pip
+pip3.9 install virtualenv
 virtualenv venv
 . venv/bin/activate
-python3 -m pip install --upgrade pip
+python -m pip install --upgrade pip
 pip install -r requirements.txt
+pip install --editable .
 ```
 
 

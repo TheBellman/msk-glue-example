@@ -33,14 +33,24 @@ resource "aws_instance" "dev" {
 
   user_data = <<EOF
 #!/bin/bash
-yum update -y -q
-yum -y -q install java-11 git
+amazon-linux-extras install -y epel
+yum -yq update
+yum -yq groupinstall "Development Tools" 
+yum -yq install java-11 git openssl-devel libffi-devel bzip2-devel wget
+
+mkdir -p /opt/python3.9
+wget -q https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tgz -P /opt/python3.9
+cd /opt/python3.9/
+tar xf Python-3.9.0.tgz && rm Python-3.9.0.tgz
+cd Python-3.9.0
+./configure --enable-optimizations
+make altinstall
+
 
 cd /home/ec2-user
 
 wget -q https://archive.apache.org/dist/kafka/3.2.0/kafka_2.12-3.2.0.tgz
-tar xzf kafka_2.12-3.2.0.tgz
-rm kafka_2.12-3.2.0.tgz
+tar xzf kafka_2.12-3.2.0.tgz && rm kafka_2.12-3.2.0.tgz
 
 echo "security.protocol=SSL" > /home/ec2-user/client.properties
 
