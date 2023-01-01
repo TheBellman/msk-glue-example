@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=65.6.3"]
+build-backend = "setuptools.build_meta"
+
+# see:
+# - https://packaging.python.org/en/latest/overview/
+# - https://packaging.python.org/en/latest/tutorials/
+# - https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+[project]
+name = "pykafka"
+description = "Simple demonstration of MKS with Glue"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Robert Hook", email = "rahook@gmail.com"}
+]
+keywords = ["example", "kafka"]
+# see https://pypi.org/classifiers/ for more classifiers
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.9",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Topic :: Utilities"
+]
+dependencies = [
+    "click >= 8.1.0",
+    "faker >= 15.3.0",
+    "confluent-kafka >= 1.9.2",
+    "pytest >= 7.2.0",
+    "pytest-mypy >= 0.10.3"
+]
+dynamic = [
+    "version"
+]
+
+[project.urls]
+homepage = "https://github.com/TheBellman/aws-glue-example"
+source = "https://github.com/TheBellman/aws-glue-example/python"
+documentation ="https://github.com/TheBellman/aws-glue-example/python"
+
+[project.scripts]
+pykafka = "pykafka.PyKafka:cli"
+
+[tool.setuptools.dynamic]
+version = {attr = "pykafka.__version__"}
