@@ -34,13 +34,18 @@ resource "aws_instance" "dev" {
   user_data = <<EOF
 #!/bin/bash
 yum update -y -q
-yum -y install java-11
-cd ~ec2-user
+yum -y -q install java-11 git
+
+cd /home/ec2-user
+
 wget -q https://archive.apache.org/dist/kafka/3.2.0/kafka_2.12-3.2.0.tgz
 tar xzf kafka_2.12-3.2.0.tgz
-chown -R ec2-user:ec2-user kafka_2.12-3.2.0
 rm kafka_2.12-3.2.0.tgz
-echo "security.protocol=SSL" > ~ec2-user/client.properties
-chown ec2-user:ec2-user ~ec2-user/client.properties
+
+echo "security.protocol=SSL" > /home/ec2-user/client.properties
+
+git clone https://github.com/TheBellman/msk-glue-example.git
+
+chown -R /home/ec2-user
 EOF
 }

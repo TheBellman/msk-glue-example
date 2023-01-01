@@ -16,6 +16,16 @@ To begin with change directories into the [terraform](terraform) folder and foll
 
 to be completed
 
+```
+cd msk-glue-example/python
+pip3 install virtualenv
+virtualenv venv
+. venv/bin/activate
+python3 -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+
 ## License
 Copyright 2022 Little Dog Digital
 
