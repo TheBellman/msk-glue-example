@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 name = "pykafka"
 description = "Simple demonstration of MKS with Glue"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 license = {file = "LICENSE"}
 authors = [
     {name = "Robert Hook", email = "rahook@gmail.com"}
@@ -19,7 +19,7 @@ keywords = ["example", "kafka"]
 # see https://pypi.org/classifiers/ for more classifiers
 classifiers = [
     "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.9",
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Intended Audience :: Developers",
