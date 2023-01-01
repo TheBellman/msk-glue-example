@@ -21,7 +21,8 @@ class KafkaConsumer:
                 'bootstrap.servers': config.bootstrap,
                 'group.id': 'pykafka',
                 'auto.offset.reset': 'earliest',
-                'on_commit': self.commit_completed
+                'on_commit': self.commit_completed,
+                'security.protocol': 'SSL'                
             }
         )
 
