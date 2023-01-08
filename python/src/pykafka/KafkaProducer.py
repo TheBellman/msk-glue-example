@@ -42,7 +42,7 @@ class KafkaProducer:
                 self.errors += 1
 
         self.producer.flush(timeout=5)
-        self.producer.close()
+        self.producer.close(timeout=5)
         self.datastream.data_stream().close()
 
         logging.info(f'Stopped - {self.errors} errors, {self.success} sent')
