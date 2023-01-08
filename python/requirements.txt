@@ -3,5 +3,5 @@ pytest >= 7.2.0
 setuptools >= 65.0.0
 faker >= 15.3.0
 pytest-mypy >= 0.10.3
-confluent-kafka >= 1.9.2
-build
+kafka-python >= 2.0.2
+build >= 0.9.0
